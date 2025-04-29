@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX 5
+
+typedef struct {
+    int dados[MAX];
+    int frente;
+    int tras;
+} Deque;
+
+void inicializar(Deque *p) {
+    (*p).frente = MAX / 2;
+    (*p).tras = MAX / 2 - 1;
+}
+
+int frente(Deque *p, int valor) {
+    if ((*p).frente == 0) {
+        printf("Deque cheio na frente!\n");
+        return 0;
+    }
+    (*p).frente = (*p).frente - 1;
+    int pos = (*p).frente;
+    (*p).dados[pos] = valor;
+    return 1;
+}
+
+int tras(Deque *p, int valor) {
+    if ((*p).tras == MAX - 1) {
+        printf("Deque cheio no final!\n");
+        return 0;
+    }
+    (*p).tras = (*p).tras + 1;
+    int pos = (*p).tras;
+    (*p).dados[pos] = valor;
+    return 1;
+}
+
+void exibir(Deque *p) {
+    printf("\nConteudo do Deque:\n");
+    for (int i = (*p).frente; i <= (*p).tras; i++) {
+        printf("|%d", (*p).dados[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+    Deque d;
+    inicializar(&d);
+
+    int numero;
+    char cor[10];
+
+    printf("Digite pares de numero e posicao (frente/tras). Digite 0 para sair.\n");
+
+    while (1) {
+        printf("\nNumero: ");
+        scanf("%d", &numero);
+        if (numero == 0){
+              break;
+        }
+
+        printf("posicao (frente/tras): ");
+        scanf("%s", cor);
+
+        if (strcmp(cor, "frente") == 0) {
+            printf("Inserindo %d na frente\n", numero);
+                frente(&d, numero);
+        } else if (strcmp(cor, "tras") == 0) {
+            printf("Inserindo %d no final\n", numero);
+                tras(&d, numero);
+        } else {
+            printf("Cor invalida! Use 'frente' ou 'tras'.\n");
+        }
+    }
+
+    exibir(&d);
+    return 0;
+}
